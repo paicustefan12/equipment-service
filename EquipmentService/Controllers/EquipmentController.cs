@@ -1,6 +1,7 @@
 ﻿using EquipmentService.BLL.Interfaces;
 using EquipmentService.BLL.Models;
 using EquipmentService.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -47,6 +48,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPut("update-stock")]
+        [Authorize("Manager")]
         public async Task<IActionResult> UpdateStockAsync([FromBody] UpdateStockModel updateStockModel)
         {
             var response = await equipmentManager.UpdateStock(updateStockModel);
