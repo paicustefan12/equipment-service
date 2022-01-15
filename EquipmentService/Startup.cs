@@ -1,8 +1,11 @@
 using EquipmentService.BLL.Interfaces;
 using EquipmentService.BLL.Managers;
+using OrderService.BLL.Models;
 using EquipmentService.DAL;
 using EquipmentService.DAL.Interfaces;
 using EquipmentService.DAL.Repositories;
+using GreenPipes;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace EquipmentService
@@ -36,7 +40,7 @@ namespace EquipmentService
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EquipmentService", Version = "v1" });
@@ -45,6 +49,7 @@ namespace EquipmentService
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IEquipmentManager, EquipmentManager>();
             services.AddTransient<IDepartmentManager, DepartmentManager>();
+            services.AddTransient<IOrderManager, OrderManager>();
 
             services
                 .AddAuthentication(options =>
@@ -85,6 +90,20 @@ namespace EquipmentService
                 opt.AddPolicy("Employee", policy => policy.RequireRole("Employee").RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
                 opt.AddPolicy("Manager", policy => policy.RequireRole("Manager").RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
             });
+
+            services.AddMassTransit(x =>
+            {
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+                {
+                    config.UseHealthCheck(provider);
+                    config.Host(new Uri("rabbitmq://localhost"), h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+                }));
+            });
+            services.AddMassTransitHostedService();
 
         }
 

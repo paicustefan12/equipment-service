@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EquipmentService.BLL.Models
+namespace OrderService.BLL.Models
 {
-    public class UpdateStockModel
+    public class OrderModel
     {
+        public string MessageType { get; set; }
+        public string OrderType { get; set; }
         public int? EquipmentId { get; set; }
         public int? Quantity { get; set; }
+        public int? OrderId { get; set; }
     }
 }
