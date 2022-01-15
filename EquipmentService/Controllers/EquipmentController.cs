@@ -1,4 +1,5 @@
 ﻿using EquipmentService.BLL.Interfaces;
+using EquipmentService.BLL.Models;
 using EquipmentService.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,13 @@ namespace EquipmentService.Controllers
         public async Task<IActionResult> CheckEquipmentsAsync()
         {
             var response = await equipmentManager.CheckEquipments();
+            return response == true ? Ok() : BadRequest();
+        }
+
+        [HttpPut("update-stock")]
+        public async Task<IActionResult> UpdateStockAsync([FromBody] UpdateStockModel updateStockModel)
+        {
+            var response = await equipmentManager.UpdateStock(updateStockModel);
             return response == true ? Ok() : BadRequest();
         }
     }

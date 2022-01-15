@@ -1,4 +1,5 @@
 ﻿using EquipmentService.BLL.Interfaces;
+using EquipmentService.BLL.Models;
 using EquipmentService.DAL.Entities;
 using EquipmentService.DAL.Interfaces;
 using System;
@@ -45,6 +46,17 @@ namespace EquipmentService.BLL.Managers
                 }
             }
 
+            return true;
+        }
+
+        public async Task<bool> UpdateStock(UpdateStockModel updateStockModel)
+        {
+            var entity = await repository.Get(updateStockModel.EquipmentId);
+            if (entity == null)
+                return false;
+
+            entity.WarehouseQuantity += updateStockModel.Quantity;
+            await UpdateEquipment(entity);
             return true;
         }
     }

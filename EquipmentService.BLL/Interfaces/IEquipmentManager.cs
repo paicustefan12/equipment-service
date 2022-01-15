@@ -1,4 +1,5 @@
-﻿using EquipmentService.DAL.Entities;
+﻿using EquipmentService.BLL.Models;
+using EquipmentService.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace EquipmentService.BLL.Interfaces
         Task UpdateEquipment(Equipment equipment);
         Task DeleteEquipment(int id);
         Task<bool> CheckEquipments();
+        Task<bool> UpdateStock(UpdateStockModel updateStockModel);
+
     }
 }
