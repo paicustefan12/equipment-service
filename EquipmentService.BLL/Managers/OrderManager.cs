@@ -32,7 +32,7 @@ namespace EquipmentService.BLL.Managers
         public async Task CreateOrder(OrderModel order)
         {
             order.MessageType = "Create";
-            Uri uri = new Uri("rabbitmq://localhost/orderQueue");
+            Uri uri = new Uri("amqps://host.docker.internal:5672/orderQueue");
             var endPoint = await busService.GetSendEndpoint(uri);
             await endPoint.Send(order);
         }
@@ -44,7 +44,7 @@ namespace EquipmentService.BLL.Managers
                 MessageType = "Delete",
                 OrderId = id
             };
-            Uri uri = new Uri("rabbitmq://localhost/orderQueue");
+            Uri uri = new Uri("amqps://host.docker.internal:5672/orderQueue");
             var endPoint = await busService.GetSendEndpoint(uri);
             await endPoint.Send(order);
         }
@@ -56,7 +56,7 @@ namespace EquipmentService.BLL.Managers
                 MessageType = "Cancel",
                 OrderId = id
             };
-            Uri uri = new Uri("rabbitmq://localhost/orderQueue");
+            Uri uri = new Uri("amqps://host.docker.internal:5672/orderQueue");
             var endPoint = await busService.GetSendEndpoint(uri);
             await endPoint.Send(order);
             return true;
@@ -69,7 +69,7 @@ namespace EquipmentService.BLL.Managers
                 MessageType = "Success",
                 OrderId = id
             };
-            Uri uri = new Uri("rabbitmq://localhost/orderQueue");
+            Uri uri = new Uri("amqps://host.docker.internal:5672/orderQueue");
             var endPoint = await busService.GetSendEndpoint(uri);
             await endPoint.Send(order);
             return true;
@@ -81,7 +81,7 @@ namespace EquipmentService.BLL.Managers
                 MessageType = "Fail",
                 OrderId = id
             };
-            Uri uri = new Uri("rabbitmq://localhost/orderQueue");
+            Uri uri = new Uri("amqps://host.docker.internal:5672/orderQueue");
             var endPoint = await busService.GetSendEndpoint(uri);
             await endPoint.Send(order);
             return true;

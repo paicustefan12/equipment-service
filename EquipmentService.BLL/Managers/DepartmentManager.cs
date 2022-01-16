@@ -27,6 +27,7 @@ namespace EquipmentService.BLL.Managers
 
         public async Task CreateDepartment(Department department)
         {
+            var i = 0;
             await repository.Insert(department);
         }
 
