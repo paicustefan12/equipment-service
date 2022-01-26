@@ -50,6 +50,8 @@ namespace EquipmentService
             services.AddTransient<IEquipmentManager, EquipmentManager>();
             services.AddTransient<IDepartmentManager, DepartmentManager>();
             services.AddTransient<IOrderManager, OrderManager>();
+            services.AddTransient<IEquipmentRepository, EquipmentRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
             services
                 .AddAuthentication(options =>
@@ -89,6 +91,8 @@ namespace EquipmentService
                 opt.AddPolicy("Admin", policy => policy.RequireRole("Admin").RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
                 opt.AddPolicy("Employee", policy => policy.RequireRole("Employee").RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
                 opt.AddPolicy("Manager", policy => policy.RequireRole("Manager").RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
+                opt.AddPolicy("All", policy => policy.RequireRole("Manager", "Employee", "Admin").RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
+                opt.AddPolicy("AdminManager", policy => policy.RequireRole("Manager", "Admin").RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
             });
 
             services.AddMassTransit(x =>

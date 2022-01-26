@@ -22,6 +22,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> CreateAsync([FromBody] Equipment equipment)
         {
             await equipmentManager.CreateEquipment(equipment);
@@ -29,6 +30,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> UpdateAsync([FromBody] Equipment equipment)
         {
             await equipmentManager.UpdateEquipment(equipment);
@@ -36,6 +38,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             await equipmentManager.DeleteEquipment(id);
@@ -43,6 +46,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("check-equipments")]
+        [Authorize("All")]
         public async Task<IActionResult> CheckEquipmentsAsync()
         {
             var response = await equipmentManager.CheckEquipments();
@@ -50,6 +54,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("update-stock")]
+
         public async Task<IActionResult> UpdateStockAsync([FromBody] UpdateStockModel updateStockModel)
         {
             var response = await equipmentManager.UpdateStock(updateStockModel);
@@ -57,6 +62,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpGet("get-equipmets")]
+        [Authorize("All")]
         public async Task<IActionResult> GetEquipments()
         {
             var (Success, list) = await equipmentManager.GetEquipments();
@@ -64,6 +70,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpGet("get-equipmet/{id}")]
+        [Authorize("All")]
         public async Task<IActionResult> GetEquipments([FromRoute] int id)
         {
             var (Success, equipment) = await equipmentManager.GetEquipmentWithOrder(id);

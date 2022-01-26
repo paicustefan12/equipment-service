@@ -1,6 +1,7 @@
 ﻿using EquipmentService.BLL.Interfaces;
 using EquipmentService.BLL.Models;
 using EquipmentService.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> CreateAsync([FromBody] Department department)
         {
             await departmentManager.CreateDepartment(department);
@@ -26,6 +28,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> UpdateAsync([FromBody] Department department)
         {
             await departmentManager.UpdateDepartment(department);
@@ -33,6 +36,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             await departmentManager.DeleteDepartment(id);
@@ -40,6 +44,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("move-to-department")]
+        [Authorize("All")]
         public async Task<IActionResult> MoveToDepartment([FromBody] MoveEquipmentModel moveEquipmentModel)
         {
             var response = await departmentManager.MoveDepartment(moveEquipmentModel);

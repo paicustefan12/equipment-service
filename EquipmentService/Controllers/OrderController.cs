@@ -20,6 +20,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> CreateAsync([FromBody] OrderModel order)
         {
             await orderManager.CreateOrder(order);
@@ -27,6 +28,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             await orderManager.DeleteOrder(id);
@@ -34,6 +36,8 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPut("cancel/{id}")]
+        [Authorize("AdminManager")]
+
         public async Task<IActionResult> CancelAsync([FromRoute] int id)
         {
             var response = await orderManager.CancelOrder(id);
@@ -41,6 +45,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("success/{id}")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> SuccessAsync([FromRoute] int id)
         {
             var response = await orderManager.SuccessOrder(id);
@@ -48,6 +53,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpPost("fail/{id}")]
+        [Authorize("AdminManager")]
         public async Task<IActionResult> FailAsync([FromRoute] int id)
         {
             var response = await orderManager.FailOrder(id);
@@ -55,6 +61,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpGet("get-orders")]
+        [Authorize("All")]
         public async Task<IActionResult> GetOrders()
         {
             var (success, list) = await orderManager.GetAllOrders();
@@ -62,6 +69,7 @@ namespace EquipmentService.Controllers
         }
 
         [HttpGet("get-order/{id}")]
+        [Authorize("All")]
         public async Task<IActionResult> GetOrder([FromRoute] int id)
         {
             var (success, list) = await orderManager.GetAllOrders();
