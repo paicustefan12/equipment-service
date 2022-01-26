@@ -19,6 +19,8 @@ namespace EquipmentService.DAL
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<EquipmentDepartment> EquipmentDepartments { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +41,17 @@ namespace EquipmentService.DAL
             modelBuilder.Entity<Department>(entity =>
             {
                 entity.Property(e => e.Name)
+                    .HasColumnType("nvarchar(100)")
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.Status)
+                    .HasColumnType("nvarchar(100)")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.OrderType)
                     .HasColumnType("nvarchar(100)")
                     .HasMaxLength(100);
             });

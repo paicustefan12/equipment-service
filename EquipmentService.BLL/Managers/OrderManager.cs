@@ -20,13 +20,15 @@ namespace EquipmentService.BLL.Managers
     {
         private readonly IBus busService;
         private readonly IRepository<Equipment> repositoryEquipment;
-
+        private readonly IOrderRepository orderRepository;
 
         public OrderManager(IBus busService,
-            IRepository<Equipment> repositoryEquipment)
+            IRepository<Equipment> repositoryEquipment,
+            IOrderRepository orderRepository)
         {
             this.busService = busService;
             this.repositoryEquipment = repositoryEquipment;
+            this.orderRepository = orderRepository;
         }
 
         public async Task CreateOrder(OrderModel order)
@@ -87,6 +89,24 @@ namespace EquipmentService.BLL.Managers
             return true;
         }
 
+        public async Task<(bool Success, List<Order> orders)> GetAllOrders()
+        {
+            var orders = await orderRepository.GetAllWithEquipment();
+            if (orders == null || orders.Count == 0)
+                return (false, null);
+
+            return (true, orders);
+        }
+
+        public async Task<(bool Success, Order orders)> GetOrder(int id)
+        {
+            var order = await orderRepository.GetWithEquipment(id);
+            if (order == null)
+                return (false, null);
+
+            return (true, order);
+        }
+
         private async Task<bool> UpdateStock(SuccessOrderModel updateStockModel)
         {
             var entity = await repositoryEquipment.Get(updateStockModel.EquipmentId);
@@ -97,5 +117,6 @@ namespace EquipmentService.BLL.Managers
             await repositoryEquipment.Update(entity);
             return true;
         }
+
     }
 }

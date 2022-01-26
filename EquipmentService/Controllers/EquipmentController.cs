@@ -55,5 +55,19 @@ namespace EquipmentService.Controllers
             var response = await equipmentManager.UpdateStock(updateStockModel);
             return response == true ? Ok() : BadRequest();
         }
+
+        [HttpGet("get-equipmets")]
+        public async Task<IActionResult> GetEquipments()
+        {
+            var (Success, list) = await equipmentManager.GetEquipments();
+            return Success == true ? Ok(list) : NotFound("There is no equipment");
+        }
+
+        [HttpGet("get-equipmet/{id}")]
+        public async Task<IActionResult> GetEquipments([FromRoute] int id)
+        {
+            var (Success, equipment) = await equipmentManager.GetEquipmentWithOrder(id);
+            return Success == true ? Ok(equipment) : NotFound("There is no equipment");
+        }
     }
 }

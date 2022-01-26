@@ -53,5 +53,19 @@ namespace EquipmentService.Controllers
             var response = await orderManager.FailOrder(id);
             return response == true ? Ok() : BadRequest();
         }
+
+        [HttpGet("get-orders")]
+        public async Task<IActionResult> GetOrders()
+        {
+            var (success, list) = await orderManager.GetAllOrders();
+            return success ? Ok(list) : NotFound("There are no orders.");
+        }
+
+        [HttpGet("get-order/{id}")]
+        public async Task<IActionResult> GetOrder([FromRoute] int id)
+        {
+            var (success, list) = await orderManager.GetAllOrders();
+            return success ? Ok(list) : NotFound("There are no orders.");
+        }
     }
 }

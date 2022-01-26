@@ -15,6 +15,7 @@ namespace EquipmentService.BLL.Interfaces
         Task DeleteEquipment(int id);
         Task<bool> CheckEquipments();
         Task<bool> UpdateStock(UpdateStockModel updateStockModel);
-
+        Task<(bool Success, List<EquipmentModel> list)> GetEquipments();
+        Task<(bool Success, Equipment list)> GetEquipmentWithOrder(int id);
     }
 }
