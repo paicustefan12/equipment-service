@@ -42,7 +42,7 @@ namespace EquipmentService.BLL.Managers
             entity.IsInWarehouse = equipment.IsInWarehouse;
             entity.WarehouseQuantity = equipment.WarehouseQuantity;
 
-            await repository.Update(equipment);
+            await repository.Update(entity);
         }
 
         public async Task DeleteEquipment(int id)
