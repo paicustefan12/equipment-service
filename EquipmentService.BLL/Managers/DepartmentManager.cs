@@ -33,7 +33,13 @@ namespace EquipmentService.BLL.Managers
 
         public async Task UpdateDepartment(Department department)
         {
-            await repository.Update(department);
+            var entity = await repository.Get(department.Id);
+            if (entity == null)
+            {
+                return;
+            }
+            entity.Name = department.Name;
+            await repository.Update(entity);
         }
 
         public async Task DeleteDepartment(int id)

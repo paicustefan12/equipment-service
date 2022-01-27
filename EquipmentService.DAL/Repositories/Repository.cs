@@ -41,6 +41,7 @@ namespace EquipmentService.DAL.Repositories
             {
                 throw new ArgumentNullException("entity");
             }
+            context.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
         public async Task Delete(T entity)

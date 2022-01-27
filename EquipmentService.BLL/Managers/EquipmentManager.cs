@@ -35,6 +35,13 @@ namespace EquipmentService.BLL.Managers
 
         public async Task UpdateEquipment(Equipment equipment)
         {
+            var entity = await repository.Get(equipment.Id);
+            if (equipment.Name != null)
+                entity.Name = equipment.Name;
+
+            entity.IsInWarehouse = equipment.IsInWarehouse;
+            entity.WarehouseQuantity = equipment.WarehouseQuantity;
+
             await repository.Update(equipment);
         }
 
@@ -67,6 +74,7 @@ namespace EquipmentService.BLL.Managers
 
         public async Task<bool> UpdateStock(UpdateStockModel updateStockModel)
         {
+            Console.WriteLine("Update-Stock");
             var entity = await repository.Get(updateStockModel.EquipmentId.GetValueOrDefault());
             if (entity == null)
                 return false;
